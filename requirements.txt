@@ -1,0 +1,8 @@
+streamlit
+pandas
+pyyaml
+faster_whisper
+openai
+requests
+polars
+yamllint
