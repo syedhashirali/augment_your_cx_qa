@@ -78,21 +78,16 @@ print_success "Created directory: $APP_DIR"
 
 # Get GitHub repo URL
 echo ""
-echo "========================================"
-echo "GitHub Repository Setup"
-echo "========================================"
+print_info "GitHub Repository Setup"
+echo ""
 read -p "Enter your GitHub repository URL (e.g., https://github.com/user/repo.git): " REPO_URL
-echo "========================================"
-# Clone repository
-print_step "Cloning repository..."
-if [ -d ".git" ]; then
-    git pull
-    print_info "Repository updated"
-else
-    git clone "$REPO_URL" .
-    print_success "Repository cloned"
+
+if [ -z "$REPO_URL" ]; then
+    print_error "Repository URL is required. Exiting."
+    exit 1
 fi
 
+echo "Using repository: $REPO_URL"
 # Create virtual environment
 print_step "Creating Python virtual environment..."
 python3 -m venv venv
@@ -111,18 +106,16 @@ else
 fi
 
 # Setup secrets
-# Setup secrets
 print_step "Setting up email credentials..."
 mkdir -p .streamlit
 
 echo ""
-echo "========================================"
-echo "   Email Configuration"
-echo "========================================"
+print_info "Email Configuration"
+echo ""
 read -p "Enter sender email address: " SENDER_EMAIL
 read -sp "Enter sender email app password: " SENDER_PASSWORD
 echo ""
-echo "========================================"
+echo ""
 
 # Create secrets file
 cat > .streamlit/secrets.toml << EOF
