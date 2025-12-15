@@ -98,6 +98,34 @@ if [ -z "$REPO_URL" ]; then
 fi
 
 echo "Using repository: $REPO_URL"
+echo "Using repository: $REPO_URL"
+
+# ADD THIS SECTION HERE (after line 99, before venv creation):
+# Clone repository
+print_step "Cloning repository..."
+if [ -d ".git" ]; then
+    git pull
+    print_info "Repository updated"
+else
+    git clone "$REPO_URL" .
+    print_success "Repository cloned"
+fi
+
+# Verify critical files exist
+print_step "Verifying repository contents..."
+MISSING_FILES=()
+[ ! -f "requirements.txt" ] && MISSING_FILES+=("requirements.txt")
+[ ! -f "app.py" ] && MISSING_FILES+=("app.py")
+[ ! -f "main.py" ] && MISSING_FILES+=("main.py")
+
+if [ ${#MISSING_FILES[@]} -gt 0 ]; then
+    print_error "Missing required files: ${MISSING_FILES[*]}"
+    print_error "Current directory contents:"
+    ls -la
+    exit 1
+fi
+print_success "All required files found"
+
 
 # Create virtual environment
 print_step "Creating Python virtual environment..."
