@@ -80,14 +80,25 @@ print_success "Created directory: $APP_DIR"
 echo ""
 print_info "GitHub Repository Setup"
 echo ""
-read -p "Enter your GitHub repository URL (e.g., https://github.com/user/repo.git): " REPO_URL
+
+# Check if running in a pipe (curl | bash) - stdin won't work
+if [ -t 0 ]; then
+    # Interactive mode - can read from user
+    read -p "Enter your GitHub repository URL (e.g., https://github.com/user/repo.git): " REPO_URL
+else
+    # Piped mode - check if URL provided as argument
+    REPO_URL="$1"
+fi
 
 if [ -z "$REPO_URL" ]; then
-    print_error "Repository URL is required. Exiting."
+    print_error "Repository URL is required."
+    print_error "Either run the script interactively: ./setup_qa_app.sh"
+    print_error "Or provide URL as argument: curl ... | bash -s https://github.com/user/repo.git"
     exit 1
 fi
 
 echo "Using repository: $REPO_URL"
+
 # Create virtual environment
 print_step "Creating Python virtual environment..."
 python3 -m venv venv
