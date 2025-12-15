@@ -107,8 +107,10 @@ print_success "Virtual environment created"
 
 # Install Python packages
 print_step "Installing Python packages from requirements.txt..."
+echo "DEBUG: Current directory:"
 pwd
-ls
+echo "DEBUG: Files in current directory:"
+ls -la
 if [ -f "requirements.txt" ]; then
     pip install --upgrade pip
     pip install -r requirements.txt
