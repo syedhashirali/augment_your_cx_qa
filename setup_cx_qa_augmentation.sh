@@ -115,7 +115,6 @@ else
     print_error "requirements.txt not found!"
     exit 1
 fi
-
 # Setup secrets
 print_step "Setting up email credentials..."
 mkdir -p .streamlit
@@ -123,9 +122,22 @@ mkdir -p .streamlit
 echo ""
 print_info "Email Configuration"
 echo ""
-read -p "Enter sender email address: " SENDER_EMAIL
-read -sp "Enter sender email app password: " SENDER_PASSWORD
-echo ""
+
+# For piped mode, these need to be provided as environment variables
+if [ -t 0 ]; then
+    # Interactive mode
+    read -p "Enter sender email address: " SENDER_EMAIL
+    read -sp "Enter sender email app password: " SENDER_PASSWORD
+    echo ""
+else
+    # Piped mode - check environment variables
+    if [ -z "$SENDER_EMAIL" ] || [ -z "$SENDER_PASSWORD" ]; then
+        print_error "When running via curl | bash, you must set environment variables:"
+        print_error "SENDER_EMAIL='your@email.com' SENDER_PASSWORD='password' curl ... | bash -s REPO_URL"
+        exit 1
+    fi
+fi
+
 echo ""
 
 # Create secrets file
