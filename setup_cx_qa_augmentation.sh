@@ -77,30 +77,34 @@ cd "$APP_DIR"
 print_success "Created directory: $APP_DIR"
 
 # Get GitHub repo URL
-echo ""
-print_info "GitHub Repository Setup"
-echo ""
+#echo ""
+#print_info "GitHub Repository Setup"
+#echo ""
 
 # Check if running in a pipe (curl | bash) - stdin won't work
-if [ -t 0 ]; then
+#if [ -t 0 ]; then
     # Interactive mode - can read from user
-    read -p "Enter your GitHub repository URL (e.g., https://github.com/user/repo.git): " REPO_URL
-else
+#    read -p "Enter your GitHub repository URL (e.g., https://github.com/user/repo.git): " REPO_URL
+#else
     # Piped mode - check if URL provided as argument
-    REPO_URL="$1"
-fi
+#    REPO_URL="$1"
+#fi
 
-if [ -z "$REPO_URL" ]; then
-    print_error "Repository URL is required."
-    print_error "Either run the script interactively: ./setup_qa_app.sh"
-    print_error "Or provide URL as argument: curl ... | bash -s https://github.com/user/repo.git"
-    exit 1
-fi
+#if [ -z "$REPO_URL" ]; then
+ #   print_error "Repository URL is required."
+  #  print_error "Either run the script interactively: ./setup_qa_app.sh"
+   # print_error "Or provide URL as argument: curl ... | bash -s https://github.com/user/repo.git"
+    #exit 1
+#fi
+
+# Hardcoded GitHub repository URL
+REPO_URL="https://github.com/YOUR_USERNAME/YOUR_REPO.git"
+
 
 echo "Using repository: $REPO_URL"
 echo "Using repository: $REPO_URL"
 
-# ADD THIS SECTION HERE (after line 99, before venv creation):
+
 # Clone repository
 print_step "Cloning repository..."
 if [ -d ".git" ]; then
@@ -259,7 +263,7 @@ print_success "Nginx configured"
 # Get public IP
 PUBLIC_IP=$(curl -s http://checkip.amazonaws.com)
 
-# Create update script
+# update script
 print_step "Creating update script..."
 cat > "$APP_DIR/update_app.sh" << 'UPDATEEOF'
 #!/bin/bash
@@ -274,7 +278,7 @@ UPDATEEOF
 chmod +x "$APP_DIR/update_app.sh"
 print_success "Update script created"
 
-# Print completion message
+# completion message
 echo ""
 echo -e "${GREEN}========================================${NC}"
 echo -e "${GREEN}   ✓ Setup Complete!${NC}"
