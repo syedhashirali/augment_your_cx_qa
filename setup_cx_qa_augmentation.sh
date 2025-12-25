@@ -98,7 +98,7 @@ print_success "Created directory: $APP_DIR"
 #fi
 
 # Hardcoded GitHub repository URL
-REPO_URL="https://github.com/YOUR_USERNAME/YOUR_REPO.git"
+REPO_URL="https://github.com/syedhashirali/augment_your_cx_qa.git"
 
 
 echo "Using repository: $REPO_URL"
